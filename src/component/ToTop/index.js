@@ -1,0 +1,1 @@
+import React from 'react';import s from './index.module.less';const ToTop = () => {  return (    <div className={s.breadcrumb}>      <span><a href="/">Top</a></span>      <span>お知らせ</span>    </div>  )}export default  ToTop

@@ -1,0 +1,288 @@
+.cart {
+  width: var(--prod-width);
+  margin: 0 auto;
+}
+
+.wrap {
+  padding: 0 20px;
+
+  &>div {
+    border-bottom: 1px dotted #ccc;
+  }
+}
+
+
+.emp {
+  height: 100px;
+  color: #666;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 30px;
+}
+
+
+
+.row {
+  color: #333;
+  font-size: 16px;
+  display: flex;
+  padding: 20px 0;
+
+  &>div {
+    flex: 1;
+    margin-right: 40px;
+
+    &:first-child {
+      flex: unset;
+      width: 160px;
+    }
+  }
+
+  &:first-child {
+    height: unset;
+  }
+
+  .img {
+    flex: unset;
+    width: 160px;
+    height: 160px;
+    border: 1px solid #eee;
+    box-sizing: border-box;
+    margin-right: 20px;
+  }
+
+  .desc {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 13px;
+
+    h1 {
+      font-size: 17px;
+    }
+  }
+
+
+  .form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .num {
+      flex: 1;
+    }
+
+    .btn {
+      flex: 1;
+      margin-left: 20px;
+      background:#666;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      font-size: 13px;
+      cursor: pointer;
+      transition: .4s;
+
+      &:hover {
+        opacity: .6;
+      }
+    }
+  }
+
+  .price {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .del {
+    display: flex;
+    // justify-content: center;
+    align-items: center;
+
+    label {
+      display: none;
+    }
+
+    span {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: .5s;
+
+      &:hover {
+        color: #ff0000;
+      }
+    }
+  }
+}
+
+
+.ret {
+  display: flex;
+  flex-direction: column;
+
+
+  .all {
+    text-align: right;
+    
+    color: #333;
+    font-size: 20px;
+    padding-top: 30px;
+
+    em {
+      font-style: normal;
+    }
+    i {
+      font-style: normal;
+      font-size: 16px;
+    }
+    span {
+      padding: 0 0 0 20px;
+      font-size: 32px;
+    }
+  }
+
+  .fun {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+
+    .btn {
+      height: 45px;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 200px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      transition: .5s;
+
+      &:hover {
+        opacity: .6;
+      }
+
+      &:last-child {
+        background: #af4233;
+        color: #fff;
+      }
+    }
+  }
+}
+
+
+
+@media screen and (max-width: 768px) {
+
+  .cart {
+    width: 100vw;
+    padding-top: 75px;
+  }
+
+
+  .wrap {
+    display: flex;
+    flex-direction: column;
+
+  }
+
+  .row {
+    flex-direction: column;
+    padding-left: 170px;
+    position: relative;
+
+    &>div {
+      margin-right: 0;
+
+      &:first-child {
+        width: 150px;
+      }
+    }
+
+    &:first-child {
+      display: none;
+    }
+
+    .img {
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 150px;
+      height: 150px;
+      margin-right: unset;
+    }
+
+    .desc {
+      margin-bottom: 15px;
+    }
+
+
+    .form {
+      .btn {
+        margin-left: 10px;
+      }
+    }
+
+    .price {
+      justify-content:flex-start;
+      margin: 10px 0;
+    }
+    .del {
+      display: flex;
+      justify-content: flex-end;
+      text-decoration: underline;
+
+      span {
+        display: none;
+      }
+      label {
+        display: flex;
+      }
+    }
+  }
+
+
+
+
+  .ret {
+
+  .all {
+    font-size: 16px;
+    i {
+      font-size: 14px;
+    }
+  }
+
+  .fun {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    padding: 30px 0;
+
+    .btn {
+      width: 70%;
+      height: 60px;
+      margin-bottom: 20px;
+
+      &:hover {
+        opacity: .6;
+      }
+
+      &:last-child {
+        width: 100%;
+        background: #af4233;
+        color: #fff;
+      }
+    }
+  }
+}
+
+
+}
