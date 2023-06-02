@@ -1,1 +1,318 @@
-import React,{useEffect,useState} from 'react';import { useNavigate } from 'react-router-dom'import {Input, Table} from 'antd'import { inject,observer } from 'mobx-react'import * as urls from '@/constant/urls'import {API_SERVER} from '@/constant/apis'import s from './index.module.less';const list = [{  key:"今月工程現場",  val: '10か所'},{  key:"今月家棟中建機",  val: '88台'},{  key:"今月克上高",  val: '8880,000え'},{  key:"今年度全國工事案件數",  val: '1000,000件'},{  key:"今年度レンタル會社書",  val: '１００００'},{  key:"工程現場監視",  val: '100'}]const columns = [  {    title: '機械番號',    dataIndex: 'key',    key: 'key',  },  {    title: '機械名稱',    dataIndex: 'name',    key: 'name',  },  {    title: '機械狀況',    dataIndex: 'status',    key: 'status',  },  {    title: '部品あらー',    dataIndex: 'part',    key: 'part',  },  {    title: '操作員',    dataIndex: 'manage',    key: 'manage',  },  {    title: '現場情報',    dataIndex: 'info',    key: 'info',  },];const dataSource = [  {    key: '00000-11111',    name: '油壓',    status: '稼動中',    part: ' 正常',    manage: 'ちウィえ',    info: 'あり'  },  {    key: '00000-22222',    name: '油壓',    status: '稼動中',    part: ' 正常',    manage: 'ちウィえ',    info: 'あり'  },  {    key: '00000-33333',    name: '油壓',    status: '稼動中',    part: ' 正常',    manage: 'ちウィえ',    info: 'あり'  },];const Index = ({store}) => {  const navigate = useNavigate();  // const [bestList,setBestList] = useState([])    const doToProd=(e)=>{    navigate(`/prod?id=${e.id}&sub=${e.sub}&name=${e.name}`)  }     return (      <div className={s.index}>      <div className={s.sidebar}>        {list.map((item,i)=>          <div className={s.item} key={i} >            <span>{item.key}</span>            <span>{item.val}</span>          </div>        )}      </div>      <div className={s.wrap}>        <div className={s.map}></div>        <div className={s.main}>          <p> 建機情報</p>          <div className={s.search}>            <p>              <span>條件檢索</span>              <i>稼動中</i>              <i>待機</i>              <i>廢業</i>            </p>                        <div className={s.btn}>添加</div>            <div className={s.btn}>檢索</div>          </div>          <div className={s.form}>            <div className={s.row}>              <label>建機種類</label>              <Input></Input>              <label>建機名稱</label>              <Input></Input>            </div>            <div className={s.row}>              <label>建機番號</label>              <Input></Input>              <label>建機狀況</label>              <Input></Input>            </div>          </div>          <div className="tab">            <Table dataSource={dataSource} columns={columns}/>          </div>                  </div>      </div>                </div>  )}export default  inject('store')(observer(Index))
+import React,{useEffect,useState} from 'react';
+import { useNavigate } from 'react-router-dom'
+import {Input, Table, Space} from 'antd'
+import * as urls from '@/constant/urls'
+import {API_SERVER} from '@/constant/apis'
+import { inject,observer,MobXProviderContext } from 'mobx-react'
+import { Document, Page } from 'react-pdf';
+
+import s from './index.module.less';
+
+import icon_close from '@/img/close.svg'
+
+import ViewImg from './ViewImg'
+
+
+const nameList = {
+  wt: "重量",
+  wt_uom:"重量単位",
+  catalog:"カタログ",
+  img_def:"デフォルトの画像",
+  img_org:"オリジナルの画像",
+  img_tiny:"サムネイル",
+  min_qty:"最小数量",
+  pkg_qty:"パッケージの数量",
+  pkg_type:"パッケージの種類",
+  rtb_code:"リアルタイムビッドコード",
+  part_type:"部品タイプ",
+  sales_desc:"販売説明",
+  part_desc_l:"製品説明",
+  Brand: "ブランド",
+  Weight:"重量",
+  Color: "色",
+  "Invoice": "請求書",
+  "Material": "材料",
+  "Package Qty": "パッケージ数量",
+  "Package Type": "パッケージタイプ",
+  "Bolt Hole Quantity": "ボルト穴の数量",
+  "Intake Port Quantity": "吸気ポートの数量",
+  "California Proposition 65": "カリフォルニア州の命令65",
+  "New external Material Group":"新しい外部素材グループ",
+  "Prop 65":"Prop 65",
+  
+}
+
+const tabList = [ "基本信息","属性信息","APPの互換性","ファイル"]
+
+const getNameByKey =(key)=>{
+  return nameList[key]
+}
+
+
+const Index = () => {
+  const { store } = React.useContext(MobXProviderContext)
+  
+  const navigate = useNavigate();
+
+  const [loading,setLoading] = useState(false)
+  const [show,setShow] = useState(false)
+  const [ds,setDs] = useState([])
+  const [key,setKey] = useState('')
+  const [img,setImg] = useState(null)
+  const [data,setData] = useState(null)
+  const [attr,setAttr] = useState(null)
+  const [app,setApp] = useState(null)
+  const [asset,setAsset] = useState([])
+  const [sel,setSel] = useState(0)
+  const [showPdf,setShowPdf] = useState(false)
+  const [showImg,setShowImg] = useState(false)
+  
+  const [pdfFile,setPdfFile] = useState(null)
+
+  
+
+  const columns = [
+    {
+      title: '序号',
+      dataIndex: 'key',
+      key: 'key',
+      align:'center',
+      width: 80,
+    },
+    {
+      title: '缩略图',
+      key: 'icon',
+      align:'center',
+      width: 80,
+      render: (_, record) => <img src={`https://${record.data.img_tiny}`} alt="" style={{height: '32px',width: '32px'}} />,
+      
+    },
+    {
+      title: '名称',
+      dataIndex: 'part_desc',
+      key: 'part_desc',
+      sorter: (a, b) => a.part_desc - b.part_desc,
+    },
+    {
+      title: '编号',
+      dataIndex: 'part_number',
+      key: 'part_number',
+      width: 200,
+      sorter: (a, b) => a.part_number - b.part_number,
+    },
+    {
+      title: '编码',
+      dataIndex: 'part_id',
+      key: 'part_id',
+      width: 100,
+      sorter: (a, b) => a.part_id - b.part_id,
+      
+    },
+    {
+      title: '原产国',
+      dataIndex: 'org_country',
+      key: 'org_country',
+      align:'center',
+      width: 100,
+      sorter: (a, b) => a.org_country - b.org_country,
+    },
+    {
+      title: '品牌',
+      dataIndex: 'brand',
+      key: 'brand',
+      align:'center',
+      width: 150,
+      sorter: (a, b) => a.brand - b.brand,
+    },
+    {
+      title: '详情',
+      key: 'action',
+      width: 80,
+      render: (_, r) => (
+        <Space size="middle">
+          <a onClick={()=>doDetail(r)}>详情</a>
+        </Space>
+      ),
+    },
+  ];
+
+  const doDetail =(e)=>{
+    let {img_org,img_def,img_tiny,..._data} = e.data
+    const asset = e.asset.filter(item => !item.fileNameOnly.endsWith('.jpg') );
+    const app = (Object.keys(e.app).length === 0 && e.app.constructor === Object)?[]:e.app
+    
+    setImg(img_org)
+    setData({..._data})
+    setAttr({...e.attr})
+    setApp([...app])
+    setAsset([...asset])
+    setShow(true)
+  }
+  
+  useEffect(() => {
+    doSearch()
+  }, []);
+  
+  const doSearch =(e)=>{
+    const params = { key:'71-15866-00' }
+    // const params = { key }
+
+    setData([])
+    setLoading(true)
+    store.queryParts(params).then(r=>{
+      setDs(r)
+      setLoading(false)
+    })
+  }
+
+  const doChgKey =(e)=>{
+    setKey(e.target.value)
+  }
+
+
+  const doClose =()=>{
+    setShow(false)
+    setSel(0)
+  }
+
+  const doShowPdf=(item)=>{
+    const fileName = `https://${item.fileName}`
+    setPdfFile(fileName)
+    setShowPdf(true)
+  }
+
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
+
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+    setPageNumber(1);
+  }
+
+  function changePage(offset,e) {
+    console.log('aaa',offset,e)
+    e.stopPropagation()
+    setPageNumber(prevPageNumber => prevPageNumber + offset);
+  }
+
+  
+
+  return (
+  
+    <div className={s.index}>
+      
+      <div className={s.wrap}>
+        <div className={s.main}>
+          <div className={s.search}>
+            <Input onChange={doChgKey}></Input>
+            <div className={s.btn} onClick={doSearch}>檢索</div>
+          </div>
+          <div className="tab">
+            <Table 
+              loading={loading} 
+              dataSource={ds} 
+              columns={columns} 
+              pagination={{position:["bottomRight"]}}
+              />
+          </div>
+        </div>
+
+        {show &&
+        <div className={s.detail}>
+          <div className={s.wrap} >
+            <div className={s.hd}>
+              <span>部品详情</span>
+              <img src={icon_close} alt="" onClick={doClose} />
+            </div>
+            <div className={s.bd}>
+              <img src={`https://${img}`} alt="" onClick={()=>setShowImg(true)}/>
+              <div className={s.rt}>
+                <div className={s.tab}>
+                  {tabList.map((item,i)=><span key={i} className={sel===i?'sel':''} onClick={()=>setSel(i)}>{item}</span>)}
+                  
+                </div>
+
+                {sel===0 &&
+                <div className={s.content}>
+                {Object.entries(data).map(([key, value]) => (
+                  <div key={key} className={s.row}>
+                    <strong>{getNameByKey(key)}</strong> 
+                    <span>{value}</span>
+                  </div>
+                ))}
+                </div>}
+
+                {sel===1 &&
+                <div className={s.content}>
+                {Object.entries(attr).map(([key, value]) => (
+                  <div key={key} className={s.row}>
+                    <strong>{getNameByKey(key)}</strong> 
+                    <span>{value}</span>
+                  </div>
+                ))}
+                </div>}
+
+                {sel===2 &&
+                <div className={s.content}>
+                  <div className={s.row}>
+                    <em>数量</em>
+                    <em>メーカー</em>
+                    <em>モデル</em>
+                    <em>適合ノート</em>
+                  </div>
+                  {app?.map((item,i) => (
+                    <div key={i} className={s.row}>
+                      <em>{item.percarQty}</em>
+                      <em>{item.make}</em>
+                      <em>{item.model}</em>
+                      <em>{item.fitmentNotes}</em>
+                    </div>
+                  ))}
+                </div>}
+
+                {sel===3 &&
+                <div className={s.pdf}>
+                  
+                  {asset?.map((item,i) => (
+                    <div key={i} className={s.item} onClick={()=>doShowPdf(item)}>
+                      <img src={`https://${item.thumbNailfileName}`} alt="" />
+                      <span>{item.desc}</span>
+                    </div>
+                  ))}
+                </div>}
+              </div>
+            </div>
+            
+          </div>
+        </div>}
+      </div>
+
+      {showImg && <ViewImg img={img} setShowImg={setShowImg} />}
+
+      {showPdf &&
+      <div className={s.viewer} onClick={()=>setShowPdf(false)}>
+        <div className={s.doc}>
+          <Document
+            className={s.doc}
+            file ={pdfFile}
+            onLoadSuccess={onDocumentLoadSuccess}
+            >
+            <Page pageNumber={pageNumber} scale={1}/>
+
+            <div className={s.nav}>
+              <button type="button" disabled={pageNumber <= 1} onClick={(e)=>changePage(-1,e)} >‹</button>
+              <p>{pageNumber || (numPages ? 1 : '--')} / {numPages || '--'}</p>
+              <button type="button" disabled={pageNumber >= numPages} onClick={(e)=>changePage(1,e)} >›</button>
+            </div>
+          </Document>
+        </div>
+      </div>}
+
+
+    </div>
+  )
+
+
+}
+
+export default  observer(Index)

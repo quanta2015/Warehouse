@@ -1,65 +1,58 @@
 :global {
   nav {
-    margin: 0 auto;
-    max-width: var(--sys-width);
-    width: var(--sys-width);
-    height: var(--menu-height);
+    width: var(--menu-width);
     display: flex;
+    flex-direction: column;
     color: #333;
     background: #fff;
     box-sizing: border-box;
-    padding: 0 60px;
-    border-bottom: 1px solid #eee;
     box-sizing: border-box;
-    background: #333;
+    background: #f7f7f7;
   }
 }
 
 
 .menu {
-  width: 100%;
-  display: flex;
-  padding: 10px;
-  align-items: center;
+    width: 100%;
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    flex-direction: column;
+    box-sizing: border-box;
 
   li {
     position: relative;
-    flex: 1;
+    border-radius: 3px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    list-style: none;
-    background: #eee;
-    height: 100%;
-    margin: 0 10px;
+    border: 1px solid #333;
+    background: #fff;
+    height: 40px;
+    width: 100%;
     cursor: pointer;
-    padding: 0 10px 0 20px;
-    transition: .5s;
+    transition: 0.5s;
+    padding: 10px;
+    box-sizing: border-box;
 
-    &:hover {
-      color: #ff6600;
-
-      a {
-        color: #ff6600;
-      }
+    &+li {
+      margin-top: 10px;
     }
 
     .menuicon {
-      position: absolute;
-      left: 5px;
-      display: inline-block;
-      width: 32px;
-      max-height: 24px;
-      margin-right: 5px;
+      width: 16px;
+      height: 16px;
+      margin-right: 10px;
+      filter: var(--fil-grey);
     }
 
     .icon {
       position: absolute;
       right: 10px;
       display: inline-block;
-      margin-top: 5px;
+      // margin-top: 5px;
       width: 10px;
       padding: 5px;
+      transition: 0.5;
     }
 
 

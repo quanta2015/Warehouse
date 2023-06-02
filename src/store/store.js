@@ -41,31 +41,9 @@ class Store {
     }
   }
 
-  async prodList(params) {
-    return await this.get(urls.API_PROD_LIST)
+  async queryParts(params) {
+    return await this.post(urls.API_QUERY_PARTS,params)
   }
-
-  async prodListBest(params) {
-    return await this.get(urls.API_PROD_LIST_BEST)
-  }
-
-
-  async searchByName(params) {
-    return await this.post(urls.API_PROD_SEARCH,params)
-  }
-
-
-
-
-  async exportStud(params) {
-    const r = await this.post(urls.API_MENU_LOAD,params)
-    if (r.code === 200) {
-      return r.path
-    }else{
-      message.error('加载数据出错!')
-    }
-  }
-
 
 
 

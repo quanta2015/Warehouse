@@ -1,0 +1,357 @@
+CREATE TABLE sys_admin_info (
+	admin_id			VARCHAR(16)		PRIMARY KEY,
+	admin_name			VARCHAR(20)		not null,
+	admin_pwd			VARCHAR(16)		not null,
+	admin_email			VARCHAR(40)		not null,
+	auth_id				VARCHAR(5)		not null,
+	last_login_datetime	datetime		not null,
+	statuz				VARCHAR(8) 		not null,  --enum
+	create_datetime		datetime		not null,
+	create_user_id		VARCHAR(10)		not null,
+	update_datetime		datetime		,
+	update_user_id		VARCHAR(10)		
+);
+
+CREATE TABLE sys_func_opt_info (
+	funcoptionid		VARCHAR(15)		PRIMARY KEY,
+	func_name			VARCHAR(20)		not null,
+	func_key			VARCHAR(5)		not null,
+	create_datetime		datetime		not null
+);
+
+CREATE TABLE auth_def_info (
+	role_id				VARCHAR(5)		PRIMARY KEY,
+	role_name			VARCHAR(20)		not null,
+	create_datetime		datetime		not null
+);
+
+CREATE TABLE part_info (
+	part_id				VARCHAR(30)		PRIMARY KEY,
+	part_name			VARCHAR(30)		not null,
+	maker_mng_num		VARCHAR(5)		not null,
+	part_number			VARCHAR(20)		not null,
+	dtl_cat_id			VARCHAR(5)		not null,
+	maker_id			VARCHAR(5)		not null,
+	uom					VARCHAR(4) 		not null,	--enum
+	stock_num			DOUBLE(10,2)	not null,
+	part_dtl_info		JSON			,
+	dwg_id				VARCHAR(10)		,
+	dwg_page			SMALLINT		,
+	create_datetime		datetime		not null,
+	create_user_id		VARCHAR(10)		not null,
+	update_datetime		datetime		,
+	update_user_id		VARCHAR(10)		
+);
+
+CREATE TABLE part_tag_info (
+	tag_id				VARCHAR(5)		PRIMARY KEY,
+	part_id				VARCHAR(30)		not null,
+	tag_content			VARCHAR(10)		not null,
+	create_datetime		datetime		not null,
+	create_user_id		VARCHAR(10)		not null,
+	update_datetime		datetime		,
+	update_user_id		VARCHAR(10)		
+);
+
+CREATE TABLE part_tag_info (
+	tag_id				VARCHAR(5)		PRIMARY KEY,
+	part_id				VARCHAR(30)		not null,
+	tag_content			VARCHAR(10)		not null,
+	create_datetime		datetime		not null,
+	create_user_id		VARCHAR(10)		not null,
+	update_datetime		datetime		not null,
+	update_user_id		VARCHAR(10)		not null
+);
+
+CREATE TABLE part_oem_info (
+	maker_id			VARCHAR(5)		PRIMARY KEY,
+	maker_name			VARCHAR(30)		not null,
+	maker_type			VARCHAR(5)		not null,	--enum
+	maker_country		VARCHAR(3)		,	--enum
+	maker_address		VARCHAR(50)		,
+	maker_tele			VARCHAR(15)		,
+	maker_email			VARCHAR(40)		,
+	maker_url			VARCHAR(20)		,
+	maker_est_date		date			,
+	maker_industry		VARCHAR(10)		,	--enum
+	maker_rep_name		VARCHAR(10)		,
+	maker_emplye_num	VARCHAR(6)		,
+	maker_sales_num		VARCHAR(10)		,
+	maker_bus_content	VARCHAR(100)	,
+	maker_comment		VARCHAR(100)	
+);
+
+CREATE TABLE part_fac (
+	maker_id			VARCHAR(5)		,	--PRIMARY KEY?
+	fac_id				VARCHAR(5)		,	--PRIMARY KEY?
+	fac_name			VARCHAR(40)		not null,
+	fac_address			VARCHAR(50)		,
+	fac_rep_name		VARCHAR(10)		,
+	maker_tele			VARCHAR(15)		,
+	maker_email			VARCHAR(40)		,
+	fac_office			JSON			
+);
+
+CREATE TABLE part_dtl_cat (
+	dtl_cat_id			VARCHAR(5)		PRIMARY KEY,
+	dtl_cat_name		VARCHAR(20)		not null,
+	cat_01				VARCHAR(16)		not null,
+	cat_02				VARCHAR(16)		,
+	cat_03				VARCHAR(16)		,
+	cat_04				VARCHAR(16)		,
+	cat_05				VARCHAR(16)		,
+);
+
+CREATE TABLE dwg_info (
+	dwg_id				VARCHAR(20)		PRIMARY KEY,
+	dwg_name			VARCHAR(400)	not null
+);
+
+CREATE TABLE part_map_info (
+	part_id				VARCHAR(30)		PRIMARY KEY,
+	equip_id			VARCHAR(30)		not null
+);
+
+CREATE TABLE equip_info (
+	equip_id			VARCHAR(30)		PRIMARY KEY,
+	equip_name			VARCHAR(20)		not null,
+	equip_brand_name	VARCHAR(20)		,
+	equip_model_num		VARCHAR(20)		,
+	equip_dtl_info		JSON			
+);
+
+CREATE TABLE whs_info (
+	whs_mng_id			VARCHAR(30)		PRIMARY KEY,
+	whs_name			VARCHAR(30)		not null,
+	whs_address			VARCHAR(50)		,
+	whs_email			VARCHAR(40)		,
+	whs_teleph			VARCHAR(15)		,
+	whs_dtl_info		JSON			
+);
+
+CREATE TABLE part_inb_mng_info (
+	inb_mng_id			VARCHAR(30)		PRIMARY KEY,
+	whs_mng_id			VARCHAR(30)		not null,
+	purcon_id			VARCHAR(30)		not null,
+	part_id				VARCHAR(30)		not null,
+	inb_num				DOUBLE(10,2)	not null,
+	hoso_serial			VARCHAR(10)		not null,
+	last_inb_user_id	VARCHAR(10)		not null,
+	last_inb_datetime	datetime		not null
+);
+
+CREATE TABLE part_inb_mng_info (
+	inb_mng_id			VARCHAR(30)		PRIMARY KEY,
+	whs_mng_id			VARCHAR(30)		not null,
+	purcon_id			VARCHAR(30)		not null,
+	part_id				VARCHAR(30)		not null,
+	inb_num				DOUBLE(10,2)	not null,
+	hoso_serial			VARCHAR(10)		not null,
+	last_inb_user_id	VARCHAR(10)		not null,
+	last_inb_datetime	datetime		not null
+);
+
+CREATE TABLE part_inb_dtl_info (
+	inb_dtl_id			VARCHAR(10)		PRIMARY KEY,
+	inb_mng_id			VARCHAR(30)		not null,
+	hoso_serial			VARCHAR(10)		not null,
+	maker_serial		VARCHAR(20)		not null,
+	inb_rep_id			VARCHAR(10)		not null,
+	last_inb_datetime 	datetime		not null
+);
+
+CREATE TABLE purcon_info (
+	purcon_id			VARCHAR(30)		PRIMARY KEY,
+	part_id				VARCHAR(30)		not null,
+	unit_price			DOUBLE(10,2)	not null,
+	currency_unit		VARCHAR(3)		not null,
+	purcon_start_date	date			not null,
+	purcon_end_date		date			not null,
+	purcon_rep_id		VARCHAR(10)		not null,
+	create_datetime		datetime		not null,
+	create_user_id		VARCHAR(10)		not null,
+	update_datetime		datetime		,
+	update_user_id		VARCHAR(10)		
+);
+
+CREATE TABLE part_outb_mng_info (
+	outb_mng_id			VARCHAR(10)		PRIMARY KEY,
+	whs_mng_id			VARCHAR(10)		not null,
+	inb_mng_id			VARCHAR(10)		not null,
+	outb_num			DOUBLE(10,2)	not null,
+	last_outb_user_id	VARCHAR(10)		not null,
+	last_outb_datetime	datetime		not null
+);
+
+CREATE TABLE part_outb_dtl_info (
+	outb_dtl_id			VARCHAR(10)		PRIMARY KEY,
+	outb_mng_id			VARCHAR(10)		not null,
+	hoso_serial			VARCHAR(10)		not null,
+	outb_rep_id			VARCHAR(10)		not null,
+	last_outb_datetime	datetime		not null
+);
+
+CREATE TABLE opt_info (
+	opt_id				VARCHAR(11)		PRIMARY KEY,
+	opt_name			VARCHAR(20)		not null,
+	opt_lic_type		VARCHAR(10)		not null,     --enum
+	opt_ver				DOUBLE(3,1)		not null,
+	opt_release_date	date			not null,
+	opt_dtl				JSON			not null
+);
+
+CREATE TABLE tent_opt_info (
+	tent_con_id			VARCHAR(16)		PRIMARY KEY,
+	opt_id				VARCHAR(2)		not null,
+	opt_start_date		date			not null,
+	opt_auto_extd_flag	BOOLEAN			not null,
+	create_datetime		datetime		not null,
+	create_user_id		VARCHAR(10)		not null,
+	update_datetime		datetime		,
+	update_user_id		VARCHAR(10)		
+);
+
+CREATE TABLE tent_info (
+	tent_mng_id			VARCHAR(16)		PRIMARY KEY,
+	tent_name			VARCHAR(20)		not null,
+	tent_ident_id		VARCHAR(10)		not null,
+	tent_serial			VARCHAR(8)		not null,
+	tent_abbr_name		VARCHAR(10)
+	tent_dtl_info		JSON
+	create_datetime		datetime		not null,
+	create_user_id		VARCHAR(10)		not null,
+	update_datetime		datetime		,
+	update_user_id		VARCHAR(10)		
+);
+
+CREATE TABLE tent_admin_info (
+	tent_admin_id		VARCHAR(16)		PRIMARY KEY,
+	tent_admin_name		VARCHAR(20)		not null,
+	tent_admin_pwd		VARCHAR(16)		not null,
+	tent_admin_email	VARCHAR(40)		not null,
+	tent_admin_auth_id	VARCHAR(5)		not null,
+	last_login_datetime	datetime		not null,
+	statuz				VARCHAR(8) 		not null,  --enum
+	create_datetime		datetime		not null,
+	create_user_id		VARCHAR(10)		not null,
+	update_datetime		datetime		,
+	update_user_id		VARCHAR(10)		
+);
+
+CREATE TABLE {tent_serial}_tent_org_info (
+	tent_org_id			VARCHAR(5)		PRIMARY KEY,
+	tent_org_name		VARCHAR(20)		not null,
+	tent_org_abbr		VARCHAR(6)		,
+	tent_org_dtl_info	JSON			,
+	create_datetime		datetime		not null,
+	create_user_id		VARCHAR(10)		not null,
+	update_datetime		datetime		,
+	update_user_id		VARCHAR(10)		
+);
+
+CREATE TABLE {tent_serial}_tent_user_info (
+	tent_user_id		VARCHAR(16)		PRIMARY KEY,
+	tent_user_login_id	VARCHAR(5)		not null,
+	tent_user_name		VARCHAR(16)		not null,
+	tent_org_id			VARCHAR(20)		not null,
+	tent_user_pwd		VARCHAR(16)		not null,
+	tent_user_email		VARCHAR(40)		not null,
+	tent_auth_id		VARCHAR(5)		not null,
+	last_login_datetime	datetime		not null,
+	statuz				VARCHAR(8) 		not null,  --enum
+	create_datetime		datetime		not null,
+	create_user_id		VARCHAR(10)		not null,
+	update_datetime		datetime		,
+	update_user_id		VARCHAR(10)		
+);
+
+CREATE TABLE {tent_serial}_tent_auth_info (
+	tent_auth_id		VARCHAR(10)		PRIMARY KEY,
+	tent_auth_name		VARCHAR(10)
+	statuz				VARCHAR(8) 		not null,  --enum
+	create_datetime		datetime		not null,
+	create_user_id		VARCHAR(10)		not null,
+	update_datetime		datetime		,
+	update_user_id		VARCHAR(10)	
+);
+
+CREATE TABLE {tent_serial}_tent_policy_info (
+	tent_policy_id		VARCHAR(5)		PRIMARY KEY,
+	policy_name			VARCHAR(20)		not null,
+	policy				VARCHAR(20)		not null,  --?
+	statuz				VARCHAR(8) 		not null,  --enum
+	create_datetime		datetime
+	create_user_id		VARCHAR(10)		not null,
+	update_datetime		datetime
+	update_user_id		VARCHAR(10)		not null,
+);
+
+CREATE TABLE {tent_serial}_whs_info (
+	whs_mng_id			VARCHAR(30)		PRIMARY KEY,
+	whs_name			VARCHAR(30)		not null,
+	whs_address			VARCHAR(50)		not null,
+	whs_email			VARCHAR(40)		not null,
+	whs_teleph			VARCHAR(15)		not null,
+	whs_dtl_info		JSON			not null
+);
+
+CREATE TABLE {tent_serial}_part_inb_mng_info (
+	inb_mng_id			VARCHAR(30)		PRIMARY KEY,
+	whs_mng_id			VARCHAR(30)		not null,
+	purcon_id			VARCHAR(30)		not null,
+	part_id				VARCHAR(30)		not null,
+	inb_num				DOUBLE(10,2)	not null,
+	hoso_serial			VARCHAR(10)		not null,
+	last_inb_user_id	VARCHAR(10)		not null,
+	last_inb_datetime	datetime		not null
+);
+
+CREATE TABLE {tent_serial}_part_inb_dtl_info (
+	inb_dtl_id 			VARCHAR(10)		PRIMARY KEY,
+	inb_mng_id			VARCHAR(10)		not null,
+	hoso_serial			VARCHAR(10)		not null,
+	inb_rep_id			DOUBLE(10,2)	not null,
+	last_inb_datetime	VARCHAR(10)		not null,
+);
+
+CREATE TABLE {tent_serial}_part_outb_mng_info (
+	outb_mng_id			VARCHAR(10)		PRIMARY KEY,
+	whs_mng_id			VARCHAR(10)		not null,
+	inb_mng_id			VARCHAR(10)		not null,
+	outb_num			DOUBLE(10,2)	not null,
+	last_outb_user_id	VARCHAR(10)		not null,
+	last_outb_datetime	datetime		not null
+);
+
+CREATE TABLE {tent_serial}_part_outb_dtl_info (
+	outb_dtl_id			VARCHAR(10)		PRIMARY KEY,
+	outb_mng_id			VARCHAR(10)		not null,
+	hoso_serial			VARCHAR(10)		not null,
+	outb_rep_id			VARCHAR(10)		not null,
+	last_outb_datetime	datetime		not null
+);
+
+CREATE TABLE {tent_serial}_part_info (
+	part_id				VARCHAR(30)		PRIMARY KEY,
+	part_name			VARCHAR(30)		not null,
+	maker_mng_num		VARCHAR(5)		not null,
+	part_number			VARCHAR(20)		not null,
+	dtl_cat_id			VARCHAR(5)		not null,
+	maker_id			VARCHAR(5)		not null,
+	uom					VARCHAR(4)		not null,  --enum
+	stock_num			DOUBLE(10,2)	not null,
+	part_dtl_info		JSON			,
+	dwg_id				VARCHAR(4)		,
+	dwg_page			SMALLINT		,
+	create_datetime		datetime		not null,
+	create_user_id		VARCHAR(10)		not null,
+	update_datetime		datetime		,
+	update_user_id		VARCHAR(10)		
+);
+
+CREATE TABLE {tent_serial}_part_oem_info (
+	maker_id			VARCHAR(5)		PRIMARY KEY,
+	maker_name			VARCHAR(30)		not null,
+	maker_type			VARCHAR(5)		not null,	--enum
+	maker_dtl			JSON			,
+);

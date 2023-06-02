@@ -7,12 +7,15 @@ import { ConfigProvider } from 'antd'
 import Loadable from '@/component/Loadable'
 import zhCN from 'antd/es/locale/zh_CN'
 import injects from '@/store'
+import { pdfjs } from 'react-pdf';
+
 
 import '@/less/var.less'
 import '@/less/com.less'
 
 
 configure({enforceActions: 'observed'})
+pdfjs.GlobalWorkerOptions.workerSrc = `pdf.worker.js`;
 
 
 let Index  = Loadable({ loader: () => import('./app/index')})
