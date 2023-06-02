@@ -37,12 +37,19 @@ const Index = () => {
   
 
   const columns = [
+    // {
+    //   title: '序号',
+    //   dataIndex: 'key',
+    //   key: 'key',
+    //   align:'center',
+    //   width: 80,
+    // },
     {
       title: '序号',
-      dataIndex: 'key',
-      key: 'key',
-      align:'center',
-      width: 80,
+      dataIndex: 'part_number',
+      key: 'part_number',
+      width: 120,
+      sorter: (a, b) => a.part_number - b.part_number,
     },
     {
       title: '缩略图',
@@ -58,18 +65,12 @@ const Index = () => {
       key: 'part_desc',
       sorter: (a, b) => a.part_desc - b.part_desc,
     },
-    {
-      title: '编号',
-      dataIndex: 'part_number',
-      key: 'part_number',
-      width: 200,
-      sorter: (a, b) => a.part_number - b.part_number,
-    },
+    
     {
       title: '编码',
       dataIndex: 'part_id',
       key: 'part_id',
-      width: 100,
+      width: 120,
       sorter: (a, b) => a.part_id - b.part_id,
       
     },
@@ -78,7 +79,7 @@ const Index = () => {
       dataIndex: 'org_country',
       key: 'org_country',
       align:'center',
-      width: 100,
+      width: 120,
       sorter: (a, b) => a.org_country - b.org_country,
     },
     {
@@ -103,7 +104,7 @@ const Index = () => {
 
   const doDetail =(e)=>{
     let {img_org,img_def,img_tiny,..._data} = e.data
-    const asset = e.asset.filter(item => !item.fileNameOnly.endsWith('.jpg') );
+    const asset = e.asset.filter(item => item.fileNameOnly.endsWith('.pdf') );
     const app = (Object.keys(e.app).length === 0 && e.app.constructor === Object)?[]:e.app
     
     setImg(img_org)
@@ -112,6 +113,8 @@ const Index = () => {
     setApp([...app])
     setAsset([...asset])
     setShow(true)
+
+    console.log('asset',asset)
   }
   
   useEffect(() => {
@@ -119,8 +122,8 @@ const Index = () => {
   }, []);
   
   const doSearch =(e)=>{
-    const params = { key:'71-15866-00' }
-    // const params = { key }
+    // const params = { key:'02-10641-01' }
+    const params = { key }
 
     setData([])
     setLoading(true)
