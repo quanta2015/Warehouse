@@ -35,168 +35,35 @@ export const MENU_LIST = [
         "icon": config,
         "submenu": []
     },
-    
-    
 ]
 
-// export const MENU_LIST = [
-//     {
-//         "key": "製品管理",
-//         "path": "/custom",
-//         "icon": parts,
-//         "submenu": [
-//             {
-//                 "key": "製品検索機能",
-//                 "path": "/project",
-//             },
-//             {
-//                 "key": "在庫管理",
-//                 "path": "/project",
-//             },
-//             {
-//                 "key": "設備監視",
-//                 "path": "/project",
-//             },
-//         ]
-//     },
-//     {
-//         "key": "工程一覽",
-//         "path": "/project",
-//         "icon": project,
-//         "submenu": [
-//             {
-//                 "key": "作業中工程",
-//                 "path": "/project",
-//             },
-//             {
-//                 "key": "作業完了工程",
-//                 "path": "/project",
-//             },
-//         ]
-//     },
-//     {
-//         "key": "建機一覽",
-//         "path": "/architect",
-//         "icon": machine,
-//         "submenu": [
-//             {
-//                 "key": "機動中建機",
-//                 "path": "/project",
-//             },
-//             {
-//                 "key": "待機建機",
-//                 "path": "/project",
-//             },
-//             {
-//                 "key": "メンテナンス中建機",
-//                 "path": "/project",
-//             },
-//             {
-//                 "key": "廢業建機",
-//                 "path": "/project",
-//             },
-//         ]
-//     },
-//     {
-//         "key": "商業バーロナー",
-//         "path": "/business",
-//         "icon": collaborate,
-//         "submenu": [
-//             {
-//                 "key": "建築會社",
-//                 "path": "/project",
-//             },
-//             {
-//                 "key": "レンタル會社",
-//                 "path": "/project",
-//             },
-//             {
-//                 "key": "メンテナンス會社",
-//                 "path": "/project",
-//             },
-//             {
-//                 "key": "物流會社",
-//                 "path": "/project",
-//             },
-//             {
-//                 "key": "物品サポライイヤー",
-//                 "path": "/project",
-//             },
-//         ]
-//     },
-//     {
-//         "key": "業務",
-//         "path": "/news",
-//         "icon": business,
-//         "submenu": [
-//             {
-//                 "key": "アラート處理",
-//                 "path": "/project",
-//             },
-//             {
-//                 "key": "設備作業計劃實際",
-//                 "path": "/project",
-//             },
-//             {
-//                 "key": "建機在庫管理",
-//                 "path": "/project",
-//             },
-//             {
-//                 "key": "運送管理",
-//                 "path": "/project",
-//             },
-//             {
-//                 "key": "メンテナンス",
-//                 "path": "/project",
-//             },
-//             {
-//                 "key": "預備部品",
-//                 "path": "/project",
-//             },
-//             {
-//                 "key": "建機監視",
-//                 "path": "/project",
-//             },
-//             {
-//                 "key": "操作員監視",
-//                 "path": "/project",
-//             },
-//         ]
-//     },
-//     {
-//         "key": "契約",
-//         "path": "/shop",
-//         "icon": chart,
-//         "submenu": [
-//             {
-//                 "key": "見機",
-//                 "path": "/project",
-//             },
-//             {
-//                 "key": "契約",
-//                 "path": "/project",
-//             },
-//             {
-//                 "key": "請求書",
-//                 "path": "/project",
-//             },
-//             {
-//                 "key": "支払う",
-//                 "path": "/project",
-//             },
-//         ]
-//     },
-//     {
-//         "key": "人事",
-//         "path": "/contact",
-//         "icon": person,
-//         "submenu": [
-//             {
-//                 "key": "人員管理",
-//                 "path": "/project",
-//             },
-//         ]
-//     }
-// ]
+export const getNameByKey =(key)=> ATTR_LIST[key]
 
-
+export const ATTR_LIST = {
+    wt: "重量",
+    wt_uom:"重量単位",
+    catalog:"カタログ",
+    img_def:"デフォルトの画像",
+    img_org:"オリジナルの画像",
+    img_tiny:"サムネイル",
+    min_qty:"最小数量",
+    pkg_qty:"パッケージの数量",
+    pkg_type:"パッケージの種類",
+    rtb_code:"リアルタイムビッドコード",
+    part_type:"部品タイプ",
+    sales_desc:"販売説明",
+    part_desc_l:"製品説明",
+    Brand: "ブランド",
+    Weight:"重量",
+    Color: "色",
+    "Invoice": "請求書",
+    "Material": "材料",
+    "Package Qty": "パッケージ数量",
+    "Package Type": "パッケージタイプ",
+    "Bolt Hole Quantity": "ボルト穴の数量",
+    "Intake Port Quantity": "吸気ポートの数量",
+    "California Proposition 65": "カリフォルニア州の命令65",
+    "New external Material Group":"新しい外部素材グループ",
+    "Prop 65":"Prop 65",
+    
+  }

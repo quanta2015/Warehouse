@@ -1,1 +1,0 @@
-import React from 'react';import classnames from 'classnames';import s from './index.module.less';const TitleLine = ({title,type}) => {    return (    <div className="g-tl-line">      <h1 className={classnames({        'top': type==='top',        'bottom': type==='bottom',        'all': type==='all',      })}>{title}</h1>    </div>  )}export default TitleLine

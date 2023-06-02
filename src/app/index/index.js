@@ -1,58 +1,23 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React,{useEffect,useState} from 'react';
-import { useNavigate } from 'react-router-dom'
 import {Input, Table, Space} from 'antd'
-import * as urls from '@/constant/urls'
 import {API_SERVER} from '@/constant/apis'
-import { inject,observer,MobXProviderContext } from 'mobx-react'
-import { Document, Page } from 'react-pdf';
-
+import { observer,MobXProviderContext } from 'mobx-react'
+import ViewPdf from './ViewPdf'
+import ViewImg from './ViewImg'
+import {getNameByKey} from '@/constant/data'
 import s from './index.module.less';
 
 import icon_close from '@/img/close.svg'
 
-import ViewImg from './ViewImg'
 
-
-const nameList = {
-  wt: "重量",
-  wt_uom:"重量単位",
-  catalog:"カタログ",
-  img_def:"デフォルトの画像",
-  img_org:"オリジナルの画像",
-  img_tiny:"サムネイル",
-  min_qty:"最小数量",
-  pkg_qty:"パッケージの数量",
-  pkg_type:"パッケージの種類",
-  rtb_code:"リアルタイムビッドコード",
-  part_type:"部品タイプ",
-  sales_desc:"販売説明",
-  part_desc_l:"製品説明",
-  Brand: "ブランド",
-  Weight:"重量",
-  Color: "色",
-  "Invoice": "請求書",
-  "Material": "材料",
-  "Package Qty": "パッケージ数量",
-  "Package Type": "パッケージタイプ",
-  "Bolt Hole Quantity": "ボルト穴の数量",
-  "Intake Port Quantity": "吸気ポートの数量",
-  "California Proposition 65": "カリフォルニア州の命令65",
-  "New external Material Group":"新しい外部素材グループ",
-  "Prop 65":"Prop 65",
-  
-}
 
 const tabList = [ "基本信息","属性信息","APPの互換性","ファイル"]
-
-const getNameByKey =(key)=>{
-  return nameList[key]
-}
 
 
 const Index = () => {
   const { store } = React.useContext(MobXProviderContext)
   
-  const navigate = useNavigate();
 
   const [loading,setLoading] = useState(false)
   const [show,setShow] = useState(false)
@@ -130,7 +95,7 @@ const Index = () => {
       width: 80,
       render: (_, r) => (
         <Space size="middle">
-          <a onClick={()=>doDetail(r)}>详情</a>
+          <a onClick={()=>doDetail(r)} >详情</a>
         </Space>
       ),
     },
@@ -181,19 +146,7 @@ const Index = () => {
     setShowPdf(true)
   }
 
-  const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
-
-  function onDocumentLoadSuccess({ numPages }) {
-    setNumPages(numPages);
-    setPageNumber(1);
-  }
-
-  function changePage(offset,e) {
-    console.log('aaa',offset,e)
-    e.stopPropagation()
-    setPageNumber(prevPageNumber => prevPageNumber + offset);
-  }
+  
 
   
 
@@ -289,26 +242,7 @@ const Index = () => {
 
       {showImg && <ViewImg img={img} setShowImg={setShowImg} />}
 
-      {showPdf &&
-      <div className={s.viewer} onClick={()=>setShowPdf(false)}>
-        <div className={s.doc}>
-          <Document
-            className={s.doc}
-            file ={pdfFile}
-            onLoadSuccess={onDocumentLoadSuccess}
-            >
-            <Page pageNumber={pageNumber} scale={1}/>
-
-            <div className={s.nav}>
-              <button type="button" disabled={pageNumber <= 1} onClick={(e)=>changePage(-1,e)} >‹</button>
-              <p>{pageNumber || (numPages ? 1 : '--')} / {numPages || '--'}</p>
-              <button type="button" disabled={pageNumber >= numPages} onClick={(e)=>changePage(1,e)} >›</button>
-            </div>
-          </Document>
-        </div>
-      </div>}
-
-
+      {showPdf && <ViewPdf setShowPdf={setShowPdf} pdfFile={pdfFile} />}
     </div>
   )
 
