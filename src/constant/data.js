@@ -56,6 +56,7 @@ export const ATTR_LIST = {
     Brand: "ブランド",
     Weight:"重量",
     Color: "色",
+    "Thickness (IN)":"厚さ（IN）",
     "Invoice": "請求書",
     "Material": "材料",
     "Package Qty": "パッケージ数量",
