@@ -20,6 +20,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `pdf.worker.js`;
 
 let Index  = Loadable({ loader: () => import('./app/index')})
 let Layout = Loadable({ loader: () => import('./app/layout')})
+let Ware   = Loadable({ loader: () => import('./app/ware')})
 // let Prod  = Loadable({ loader: () => import('./app/prod')})
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -30,6 +31,7 @@ root.render(
         <Routes>
           <Route element={<Layout />}>
             <Route path="/"        element={<Index />} />
+            <Route path="/ware"    element={<Ware />} />
           </Route>
         </Routes>
       </BrowserRouter>

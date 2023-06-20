@@ -9,16 +9,7 @@ class Store {
     makeAutoObservable(this);
   }
 
-  // 打开菜单子列表
-  open = false
-  // 显示产品详情
-  show = false
-  // 是否位于 `/contact` 路由
-  contact = false
-
-  setShow = (e) =>{
-    this.show = e
-  }
+  mobile = false
 
 
   async post(url, params) {

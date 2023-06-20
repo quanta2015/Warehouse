@@ -38,6 +38,27 @@ img {
   vertical-align: top;
 }
 
+.fb {
+  font-family: "Lato", sans-serif;
+}
+
+// .ant-select-selector,
+// .ant-input-number-lg {
+//   border-radius: 0 !important;
+
+//   span {
+//     font-size: 13px;
+//     text-align: center;
+//     color: #666;
+//   }
+
+// }
+@keyframes stroke-dashoffset {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
 #root {
   display: flex;
   flex-direction: column;
@@ -50,34 +71,8 @@ img {
 }
 
 
-.fb {
-  font-family: "Lato", sans-serif;
-}
-
-
-.ant-select-selector,.ant-input-number-lg {
-    border-radius: 0!important;
-
-    span {
-      font-size: 13px;
-      text-align: center;
-      color: #666;
-    }
-    
-}
-
-
-@keyframes stroke-dashoffset {
-  100% {
-      stroke-dashoffset: 0;
+@media screen and (max-width: 768px) {
+  #root {
+    width: 100vw;
   }
 }
-
-
-// @media screen and (max-width: 768px) {
-//   #root {
-//     width: 100vw;
-//   }
-// }
-
-

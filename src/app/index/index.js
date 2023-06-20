@@ -150,9 +150,9 @@ const Index = () => {
   }, [page]);
   
   const doSearch =(e)=>{
-    // const params = { key:'02-10641-01' }
+    const params = { key:'02-10641-01' }
     // const params = { key:'654' }
-    const params = { key }
+    // const params = { key }
 
     setData([])
     setLoading(true)

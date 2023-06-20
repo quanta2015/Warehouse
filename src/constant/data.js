@@ -6,8 +6,8 @@ import config   from '@/img/menu/config.svg'
 
 export const MENU_LIST = [
     {
-        "key": "製品検索機能",
-        "path": "/search",
+        "key": "製品検索",
+        "path": "/",
         "icon": search,
         "submenu": []
     },
@@ -29,12 +29,12 @@ export const MENU_LIST = [
         "icon": person,
         "submenu": []
     },
-    {
-        "key": "系统设置",
-        "path": "/config",
-        "icon": config,
-        "submenu": []
-    },
+    // {
+    //     "key": "系统设置",
+    //     "path": "/config",
+    //     "icon": config,
+    //     "submenu": []
+    // },
 ]
 
 export const getNameByKey =(key)=> ATTR_LIST[key]
