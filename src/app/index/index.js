@@ -24,7 +24,7 @@ const Index = () => {
   const [loading,setLoading] = useState(false)
   const [show,setShow] = useState(false)
   const [ds,setDs] = useState([])
-  const [key,setKey] = useState('')
+  const [key,setKey] = useState('02-10641-01')
   const [img,setImg] = useState(null)
   const [data,setData] = useState(null)
   const [attr,setAttr] = useState(null)
@@ -150,9 +150,9 @@ const Index = () => {
   }, [page]);
   
   const doSearch =(e)=>{
-    const params = { key:'02-10641-01' }
+    // const params = { key:'02-10641-01' }
     // const params = { key:'654' }
-    // const params = { key }
+    const params = { key }
 
     setData([])
     setLoading(true)
@@ -186,7 +186,7 @@ const Index = () => {
       <div className={s.wrap}>
         <div className={s.main}>
           <div className={s.search}>
-            <Input onChange={doChgKey}></Input>
+            <Input onChange={doChgKey} value={key} allowClear />
             <div className={s.btn} onClick={doSearch}>檢索</div>
           </div>
 
