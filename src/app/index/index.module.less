@@ -26,9 +26,8 @@
 }
 
 .index {
-  width: var(--sys-width);
-  max-width: var(--sys-width);
-  margin: 0 auto;
+  // width: var(--sys-width);
+// max-width: var(--sys-width); margin: 0 auto;
   box-sizing: border-box;
   flex: 1;
   display: flex;
@@ -166,7 +165,8 @@
         display: flex;
         flex-direction: column;
 
-        .row {
+        .row,
+        .rowApp {
           display: flex;
           padding: 10px;
 
@@ -198,7 +198,7 @@
           strong {
             width: 200px;
             font-size: 14px;
-            font-weight: 400px;
+            font-weight: 400;
           }
 
           span {
@@ -212,8 +212,6 @@
 
           }
         }
-
-
       }
 
 
@@ -376,10 +374,14 @@
     padding: 0;
     border-bottom: none;
 
+    input {
+      height: 30px;
+    }
+
     .btn {
       margin-left: 10px;
-      height: 50px;
-      font-size: 20px;
+      // height: 40px;
+      font-size: 16px;
       letter-spacing: 0.3em;
     }
   }
@@ -419,6 +421,30 @@
           }
         }
 
+
+        .content {
+
+
+          .row {
+            flex-direction: column !important;
+
+            &:nth-child(3) {
+              flex-direction: row;
+            }
+
+
+            &+.row {
+              border-top: none;
+            }
+
+            strong {
+              border-bottom: 1px solid #eee;
+              width: 100%;
+              padding-bottom: 5px;
+              margin-bottom: 5px;
+            }
+          }
+        }
 
 
 
@@ -461,54 +487,6 @@
 
     .rt {
       margin-left: 0;
-
-      &>span {
-        font-size: 13px;
-      }
-
-      &>h1 {
-        color: #004098;
-        font-size: 18px;
-        // padding: 0;
-        margin: 5px 0;
-      }
-
-      &>p {
-
-        text-align: justify;
-        margin-bottom: 10px;
-      }
-
-      &>.tab {
-        display: flex;
-        flex-direction: column;
-        border-top: 1px solid #ccc;
-        border-bottom: 1px solid #ccc;
-
-
-        .row {
-          display: flex;
-
-          &:first-child {
-            background: #eee;
-          }
-
-          &+.row {
-            border-top: 1px solid #ccc;
-          }
-
-          span {
-            flex: 1;
-            text-align: center;
-
-            &+span {
-              border-left: 1px solid #ccc;
-            }
-
-          }
-        }
-      }
-
     }
   }
 }

@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React,{useEffect,useState} from 'react';
-import {Input, Table, Space, Pagination} from 'antd'
+import {Input, Table, Space, Pagination, Spin} from 'antd'
 import {API_SERVER} from '@/constant/apis'
 import { observer,MobXProviderContext } from 'mobx-react'
 import ViewPdf from './ViewPdf'
@@ -138,6 +138,7 @@ const Index = () => {
     
 
     console.log('asset',asset)
+    console.log('attr',e.attr)
   }
   
   useEffect(() => {
@@ -182,123 +183,130 @@ const Index = () => {
   return (
   
     <div className={s.index}>
-      
-      <div className={s.wrap}>
-        <div className={s.main}>
-          <div className={s.search}>
-            <Input onChange={doChgKey} value={key} allowClear />
-            <div className={s.btn} onClick={doSearch}>檢索</div>
+      <Spin spinning={loading}>
+        <div className={s.wrap}>
+          <div className={s.main}>
+            <div className={s.search}>
+              <Input onChange={doChgKey} value={key} allowClear />
+              <div className={s.btn} onClick={doSearch}>檢索</div>
+            </div>
+
+            {ds.length> 0 &&
+            <div className={s.tab}>
+              <div className={s.pageination}>
+                 <Pagination defaultCurrent={1} pageSize={SIZE} total={ds.length} onChange={(e)=>setPage(e)} showSizeChanger={false}/>
+              </div>
+              {dataPage.map((item,i)=>
+                <div className={s.part} key={i} onClick={()=>doDetail(item)}>
+                  
+                  <div className={s.lt}>
+                    <img src={`https://${item.data.img_org}`} alt="" />
+                  </div>
+                  <div className={s.rt}>
+                    <span>{item.part_number}</span>
+                    <h1>{item.part_desc}</h1>
+                    <p>{item.data.sales_desc}</p>
+                    <div className={s.tab}>
+                      <div className={s.row}>
+                        <span>原产国</span>
+                        <span>品牌</span>
+                        <span>编码</span>
+                      </div>
+                      <div className={s.row}>
+                        <span>{item.org_country}</span>
+                        <span>{item.brand}</span>
+                        <span>{item.part_id}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>}
+
+            {ds.length=== 0 && 
+            <div className={s.empty}>検索結果がありません</div>}
           </div>
 
-          {ds.length> 0 &&
-          <div className={s.tab}>
-            <div className={s.pageination}>
-               <Pagination defaultCurrent={1} pageSize={SIZE} total={ds.length} onChange={(e)=>setPage(e)} showSizeChanger={false}/>
-            </div>
-            {dataPage.map((item,i)=>
-              <div className={s.part} key={i} onClick={()=>doDetail(item)}>
-                
-                <div className={s.lt}>
-                  <img src={`https://${item.data.img_org}`} alt="" />
-                </div>
+          {show &&
+          <div className={s.detail}>
+            <div className={s.wrap} >
+              <div className={s.hd}>
+                <span>部品详情</span>
+                <img src={icon_close} alt="" onClick={doClose} />
+              </div>
+              <div className={s.bd}>
+                <img src={`https://${img}`} alt="" onClick={()=>setShowImg(true)}/>
                 <div className={s.rt}>
-                  <span>{item.part_number}</span>
-                  <h1>{item.part_desc}</h1>
-                  <p>{item.data.sales_desc}</p>
                   <div className={s.tab}>
-                    <div className={s.row}>
-                      <span>原产国</span>
-                      <span>品牌</span>
-                      <span>编码</span>
-                    </div>
-                    <div className={s.row}>
-                      <span>{item.org_country}</span>
-                      <span>{item.brand}</span>
-                      <span>{item.part_id}</span>
-                    </div>
+                    {tabList.map((item,i)=><span key={i} className={sel===i?'sel':''} onClick={()=>setSel(i)}>{item}</span>)}
+                    
                   </div>
+
+                  {sel===0 &&
+                  <div className={s.content}>
+                  {Object.entries(data).map(([key, value]) => (
+                    <div key={key} className={s.row}>
+                      <strong>{getNameByKey(key)}</strong> 
+                      <span>{value}</span>
+                    </div>
+                  ))}
+                  </div>}
+
+                  {sel===1 &&
+                  <div className={s.content}>
+                  {Object.entries(attr).map(([key, value]) => (
+                    <React.Fragment key={key}>
+                      {(value) && 
+                      <div className={s.row}>
+                        <strong>{getNameByKey(key)}</strong> 
+                        <span>{value}</span>
+                      </div>}
+                    </React.Fragment >
+
+                  ))}
+                  </div>}
+
+                  {sel===2 &&
+                  <div className={s.content}>
+
+                    { (app.length>0) &&
+                    <div className={s.rowApp}>
+                      <em>数量</em>
+                      <em>メーカー</em>
+                      <em>モデル</em>
+                      <em>適合ノート</em>
+                    </div>}
+                    {app?.map((item,i) => (
+                      <div key={i} className={s.rowApp}>
+                        <em>{item.percarQty}</em>
+                        <em>{item.make}</em>
+                        <em>{item.model}</em>
+                        <em>{item.fitmentNotes}</em>
+                      </div>
+                    ))}
+                  </div>}
+
+                  {sel===3 &&
+                  <div className={s.pdf}>
+                    
+                    {asset?.map((item,i) => (
+                      <div key={i} className={s.item} onClick={()=>doShowPdf(item)}>
+                        <img src={`https://${item.thumbNailfileName}`} alt="" />
+                        <span>{item.desc}</span>
+                      </div>
+                    ))}
+                  </div>}
                 </div>
               </div>
-            )}
+              
+            </div>
           </div>}
-
-          {ds.length=== 0 && 
-          <div className={s.empty}>検索結果がありません</div>}
         </div>
-
-        {show &&
-        <div className={s.detail}>
-          <div className={s.wrap} >
-            <div className={s.hd}>
-              <span>部品详情</span>
-              <img src={icon_close} alt="" onClick={doClose} />
-            </div>
-            <div className={s.bd}>
-              <img src={`https://${img}`} alt="" onClick={()=>setShowImg(true)}/>
-              <div className={s.rt}>
-                <div className={s.tab}>
-                  {tabList.map((item,i)=><span key={i} className={sel===i?'sel':''} onClick={()=>setSel(i)}>{item}</span>)}
-                  
-                </div>
-
-                {sel===0 &&
-                <div className={s.content}>
-                {Object.entries(data).map(([key, value]) => (
-                  <div key={key} className={s.row}>
-                    <strong>{getNameByKey(key)}</strong> 
-                    <span>{value}</span>
-                  </div>
-                ))}
-                </div>}
-
-                {sel===1 &&
-                <div className={s.content}>
-                {Object.entries(attr).map(([key, value]) => (
-                  <div key={key} className={s.row}>
-                    <strong>{getNameByKey(key)}</strong> 
-                    <span>{value}</span>
-                  </div>
-                ))}
-                </div>}
-
-                {sel===2 &&
-                <div className={s.content}>
-                  <div className={s.row}>
-                    <em>数量</em>
-                    <em>メーカー</em>
-                    <em>モデル</em>
-                    <em>適合ノート</em>
-                  </div>
-                  {app?.map((item,i) => (
-                    <div key={i} className={s.row}>
-                      <em>{item.percarQty}</em>
-                      <em>{item.make}</em>
-                      <em>{item.model}</em>
-                      <em>{item.fitmentNotes}</em>
-                    </div>
-                  ))}
-                </div>}
-
-                {sel===3 &&
-                <div className={s.pdf}>
-                  
-                  {asset?.map((item,i) => (
-                    <div key={i} className={s.item} onClick={()=>doShowPdf(item)}>
-                      <img src={`https://${item.thumbNailfileName}`} alt="" />
-                      <span>{item.desc}</span>
-                    </div>
-                  ))}
-                </div>}
-              </div>
-            </div>
-            
-          </div>
-        </div>}
-      </div>
 
       {showImg && <ViewImg img={img} setShowImg={setShowImg} />}
 
       {showPdf && <ViewPdf setShowPdf={setShowPdf} pdfFile={pdfFile} />}
+      </Spin>
     </div>
   )
 

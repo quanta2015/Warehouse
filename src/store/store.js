@@ -36,6 +36,20 @@ class Store {
     return await this.post(urls.API_QUERY_PARTS,params)
   }
 
+  async queryTable(params) {
+    return await this.post(urls.API_QUERY_TABLE,params)
+  }
+
+  async saveTable(params) {
+    return await this.post(urls.API_SAVE_TABLE,params)
+  }
+
+  async deleteRecord(params) {
+    return await this.post(urls.API_DELETE_RECORD,params)
+  }
+
+
+  
 
 
 
