@@ -1,3 +1,14 @@
+export const clone=(obj)=> {
+    let copy = Array.isArray(obj) ? [] : {};
+    for (let key in obj) {
+        let value = obj[key];
+        copy[key] = (typeof value === 'object' && value !== null) ? clone(value) : value;
+    }
+    return copy;
+}
+
+
+
 export const isN=(e)=>{
   return  ((e===null)||(e==='')||(e===undefined))?true:false
 }
@@ -17,91 +28,26 @@ export const scrollToBottom =(direction)=> {
 }
 
 
-export const getFilter = (loc)=>{
-  const searchParams = new URLSearchParams(loc)
-    const id   = parseInt(searchParams.get('id'))
-    const search = searchParams.get('search')
-    const name = searchParams.get('name')
-    const sub  = searchParams.get('sub')
-    const type = searchParams.get('type')
-    let filter = sub? {search, id ,name, key:'sub', val:sub }:{search, id, name:name, key:'type', val:type }
-    return filter
+export const filterData =(data,type)=>{
+  let condSet, ret =[]
+  switch(type) {
+    case 'sign':
+      condSet = new Set(['json', 'auto_user', 'auto_date'])
+      ret = data.filter(item => true ^  condSet.has(item.type))
+      break;
+    case 'json':
+      condSet = new Set(['json'])
+      ret = data.filter(item => false ^  condSet.has(item.type))
+      break;
+    case 'auto':
+      ret = data.filter(item => item.type.startsWith('auto_'))
+      break;
+  }
+  return ret 
 }
 
 
-export const toOpt = (list,ret=[]) => { 
-  list.map(o=> ret.push({label:o, value: o}))
-  ret.unshift( {label:'選択してください', value: '' })
-  return ret
+export const getKeyField =(e)=>{
+  let list =  e.filter(item=> item.key )
+  return list[0].dataIndex
 }
-
-
-export const formatProdList = (list) =>{
-  list.map((item,i)=>{
-    item.imgList = JSON.parse(item.imglist)
-    item.clrList = JSON.parse(item.clrlist)
-    item.cltList = JSON.parse(item.cltlist)
-    item.sizeList = JSON.parse(item.sizelist)
-    item.intr = JSON.parse(item.intr)
-    item.desc = item.des
-  })
-}
-
-// export const formatTime = (dateStr)=> {
-//   var publishTime
-//   if (dateStr && dateStr.toString().length <= 10) {
-//     publishTime = dateStr
-//   } else if (dateStr && dateStr.toString().length > 10){
-//     publishTime = getDateTimeStamp(dateStr) / 1000
-//   }
-  
-//     var d_seconds,
-//     d_minutes,
-//     d_hours,
-//     d_days,
-//     timeNow = parseInt(new Date().getTime() / 1000),
-//     d,
-//     date = new Date(publishTime * 1000),
-//     Y = date.getFullYear().toString().slice(2),
-//     M = date.getMonth() + 1,
-//     D = date.getDate(),
-//     H = date.getHours(),
-//     m = date.getMinutes(),
-//     s = date.getSeconds();
-//   d = timeNow - publishTime;
-  
-//   if (H < 10) {
-//     H = "0" + H;
-//   }
-//   if (m < 10) {
-//     m = "0" + m;
-//   }
-//   if (s < 10) {
-//     s = "0" + s;
-//   }
-//   d_days = parseInt(d / 86400)
-//   d_hours = parseInt(d / 3600);
-//   d_minutes = parseInt(d / 60);
-//   d_seconds = parseInt(d);
-//   if (d_days > 0 && d_days < 3) {
-//     if(d_days == 1){
-//         return "昨天";
-//     }else if(d_days == 2){
-//         return "前天";
-//     }
-//   } else if (d_days <= 0 && d_hours > 0) {
-//     // return d_hours + "小时前";
-//     if (new Date().getHours() !==  d_hours && new Date().getHours() < d_hours) {
-//       return '昨天'
-//     } 
-//     return  H + ':' + m
-//   } else if (d_hours <= 0 && d_minutes > 0) {
-//     return d_minutes + "分钟前";
-//   } else if (d_seconds < 60) {
-//       return '刚刚'
-//   } else if (d_days >= 3 && d_days < 30) {
-//     return Y + "/" + M + "/" + D ;
-//   } else if (d_days >= 30) {
-//     return Y + "/" + M + "/" + D;
-//   }
-// }

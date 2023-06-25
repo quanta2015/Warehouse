@@ -1,10 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React,{useEffect,useState} from 'react';
-import {Input, Table, Space, Pagination, Spin, Form, Button, Row, Col, InputNumber} from 'antd'
+import {Input, Table, Space, Pagination, Spin, Form, Button, Row, Col, Select, InputNumber} from 'antd'
 import { MinusCircleOutlined, PlusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import {API_SERVER} from '@/constant/apis'
 import { observer,MobXProviderContext } from 'mobx-react'
-
 
 import s from './index.module.less';
 
@@ -18,16 +17,20 @@ const formItemLayout = {
   },
 };
 
-const FormMain = ({col_m,col_j, col_a, setShowForm,setLoading,setRefresh,table}) => {
+const FormMain = ({colM,colJ, col_a, method, setShowForm,setLoading,setRefresh,table}) => {
   const { store } = React.useContext(MobXProviderContext)
 
+  const formItems = [...colM,...colJ]
+  const initialValues = formItems.reduce((prev, curr) => {
+    return { ...prev, [curr.dataIndex]: curr.val };
+  }, {});
 
   const onFinish = (values) => {
-    const def = [...col_m, ...col_j, ...col_a]
+    const def = [...colM, ...colJ, ...col_a]
 
     def.map((item,i)=>{
       switch(item.type) {
-        case 'json': item.val = JSON.stringify(values[item.dataIndex])
+        case 'json': item.val = JSON.stringify(values[item.dataIndex]);break;
         case 'auto_user': item.val = 'liyang';break;
         case 'auto_date': item.val = '2023-06-20 11:13:13';break;
         default: item.val = values[item.dataIndex]
@@ -35,7 +38,7 @@ const FormMain = ({col_m,col_j, col_a, setShowForm,setLoading,setRefresh,table})
     })
 
     const params = {
-      table, def
+      table, def, method
     }
     // console.log(params,'params')
 
@@ -45,19 +48,37 @@ const FormMain = ({col_m,col_j, col_a, setShowForm,setLoading,setRefresh,table})
       setRefresh(true)
       setShowForm(false)
     })
-
   };
 
 
+  const renderInput = (e) => {
+    switch(e.type) {
+      case 'string':
+        return <Input />;
+      case 'double':
+        return <InputNumber />;
+      case 'select':
+        return (
+          <Select>
+            {e.enum.map((val, i) => (
+              <Select.Option value={val} key={i}>{val}</Select.Option>
+            ))}
+          </Select>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className={s.form}>
       <div className={s.wrap}>
         <Form 
           {...formItemLayout}
+          initialValues={initialValues}
           onFinish={onFinish}
           >
-          {col_m.map(field => (
+          {colM.map(field => (
             <Form.Item
               key={field.dataIndex}
               name={field.dataIndex}
@@ -68,13 +89,13 @@ const FormMain = ({col_m,col_j, col_a, setShowForm,setLoading,setRefresh,table})
                   message: `请填写${field.title}!`,
                 },
               ]}
-            >
-              {field.type === 'double' ? <InputNumber placeholder={`请输入${field.title}`}  /> : <Input placeholder={`请输入${field.title}`} />}
+            > 
+              {renderInput(field)}
             </Form.Item>
           ))}
 
 
-          {col_j.map((item,i)=>
+          {colJ.map((item,i)=>
             <Row key={i}>
               <Col span={4} style={{textAlign:'right'}}>{item.title}：</Col>
               <Col span={20}>

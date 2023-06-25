@@ -1,87 +1,111 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React,{useEffect,useState} from 'react';
-import {Input, Table, Space, Pagination, Spin, Form, Button, Row, Col} from 'antd'
-import { MinusCircleOutlined, PlusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import {Input, Table, Space, Pagination, Spin, Form, Button, Row, Col,Modal} from 'antd'
+import { MinusCircleOutlined, PlusCircleOutlined, PlusOutlined,ExclamationCircleFilled } from '@ant-design/icons';
 import {API_SERVER} from '@/constant/apis'
 import { observer,MobXProviderContext } from 'mobx-react'
 import FormMain from './FormMain'
-import {json_w1,json_w2,getNameByKey} from '@/constant/data'
-
+import {json_w1,json_w2,jsonList} from '@/constant/data'
+import {filterData,getKeyField,clone} from '@/util/fn'
 import s from './index.module.less';
+import { useSearchParams } from 'react-router-dom';
+
+const { confirm } = Modal;
 
 
-// const filter =(data,f,cond)=> data.filter(item => cond ^  f.has(item))
-const filterData =(data,type)=>{
-  let condSet, ret =[]
-  switch(type) {
-    case 'sign':
-      condSet = new Set(['json', 'auto_user', 'auto_date'])
-      ret = data.filter(item => true ^  condSet.has(item.type))
-      break;
-    case 'json':
-      condSet = new Set(['json'])
-      ret = data.filter(item => false ^  condSet.has(item.type))
-      break;
-    case 'auto':
-      ret = data.filter(item => item.type.startsWith('auto_'))
-      break;
-  }
-  return ret 
-}
-
-
-const getKeyField =(e)=>{
-  let list =  e.filter(item=> item.key )
-  return list[0].dataIndex
-}
-
-
-const formItemLayout = {
-  labelCol: {
-    md: { span: 4 },
-  },
-  wrapperCol: {
-    md: { span: 20 },
-  },
-};
-
-const dataJson = json_w2
-const define = dataJson.define
-const defineSub = dataJson.sub.define
 
 const Ware = () => {
   const { store } = React.useContext(MobXProviderContext)
 
+  const [searchParams] = useSearchParams();
+  const index = searchParams.get('index');
+  // console.log(index,'index')
+  const dataJson  = jsonList[index]
+  const define    = dataJson.define
+  const defineSub = dataJson.sub.define
 
+  
+
+  const [method, setMethod] = useState('Insert')
   const [loading,setLoading] = useState(false)
   const [refresh,setRefresh] = useState(false)
   const [ds,setDs] = useState(false)
   const [sub,setSub] = useState([])
   const [showSub,setShowSub] = useState(false)
   const [showForm,setShowForm] = useState(false)
+  const [colM,setColM] = useState([])
+  const [colJ,setColJ] = useState([])
 
-
-  const col_m = filterData(define,'sign')
+  // 普通字段
+  const col_m = filterData(define,'sign')  
+  // json字段
   const col_j = filterData(define,'json')
+  // auto字段
   const col_a = filterData(define,'auto')
+
 
 
   const col_s = filterData(defineSub,'sign') 
 
   const col = col_m.concat({
     title: '功能',
-    width: 100,
+    width: 150,
     render: (item) => (
       <Space>
         <a onClick={()=>doDetail(item)}>详情</a>
-        <a onClick={()=>doDel(item)}>删除</a>
+        <a onClick={()=>doEdit(item)}>修改</a>
+        <a onClick={()=>showDeleteConfirm(item)}>删除</a>
       </Space>
     ),
   })
 
+
+
+  const showDeleteConfirm = (e) => {
+    confirm({
+      title: '确认要删除记录?',
+      icon: <ExclamationCircleFilled />,
+      okType: 'danger',
+      okText: 'Yes',
+      cancelText: 'No',
+      onOk() {
+        doDel(e)
+      },
+    });
+  };
+
   const doDetail =(e)=>{
     setSub(e.sub)
     setShowSub(true)
+  }
+
+
+  const doEdit=(e)=>{
+    let m = clone(col_m)
+    let j = clone(col_j)
+
+    m.map((item,i)=>{
+      item.val = e[item.dataIndex]
+    })
+    j.map((item,i)=>{
+      item.val = JSON.parse(e[item.dataIndex])
+    })
+    setColM(m)
+    setColJ(j)
+
+    setMethod('update')
+    setShowForm(true)
+  }
+
+
+  const doAdd =()=>{
+
+
+    setColM(col_m)
+    setColJ(col_j)
+    setMethod('insert')
+    setShowForm(true)
+
   }
 
 
@@ -93,15 +117,12 @@ const Ware = () => {
       val: e[key],
     }
 
-    // console.log(params)
     setLoading(true)
     store.deleteRecord(params).then(r=>{
       setLoading(false)
       setRefresh(true)
     })
   }
-
-  
 
 
   useEffect(() => {
@@ -118,12 +139,13 @@ const Ware = () => {
       setLoading(false)
       setDs(r)
       setRefresh(false)
+
+      // console.log(r,'rrr')
     })
-  }, [refresh]);
-
-  
+  }, [refresh,index]);
 
 
+  console.log(col_m,'col_m')
 
   return (
   
@@ -131,13 +153,13 @@ const Ware = () => {
       <Spin spinning={loading}>
         <div className={s.main}>
           <div className={s.fun}>
-            <Button type="primary" icon={<PlusCircleOutlined/>} danger onClick={()=>setShowForm(true)}>添加</Button>
+            <Button type="primary" icon={<PlusCircleOutlined/>} danger onClick={()=>doAdd()}>添加</Button>
           </div>
           <Table dataSource={ds} columns={col} />
         </div>
 
 
-        {showForm && <FormMain {...{col_m, col_j, col_a, setShowForm, setRefresh,setLoading, table:dataJson.table}} />}
+        {showForm && <FormMain {...{colM, colJ, col_a, method, setShowForm, setRefresh,setLoading, table:dataJson.table}} />}
 
         {showSub &&
         <div className={s.pop}>

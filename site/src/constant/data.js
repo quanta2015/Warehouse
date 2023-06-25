@@ -13,19 +13,19 @@ export const MENU_LIST = [
     },
     {
         "key": "在庫管理",
-        "path": "/ware",
+        "path": "/ware?index=0",
         "icon": ware,
         "submenu": []
     },
     {
-        "key": "設備監視",
-        "path": "/monitor",
+        "key": "入库管理",
+        "path": "/ware?index=1",
         "icon": rcamera,
         "submenu": []
     },
     {
-        "key": "人员管理",
-        "path": "/person",
+        "key": "出库管理",
+        "path": "/ware?index=2",
         "icon": person,
         "submenu": []
     },
@@ -73,12 +73,15 @@ export const ATTR_LIST = {
     "Prop 65":"Prop 65",  
   }
 
+
+
 export const json_w1 = {
   table:'whs',
   define: [{
     dataIndex: 'whs_id',
     type: 'string',
     title: '仓库ID',
+    key: true,
   },{
     dataIndex: 'whs_name',
     type: 'string',
@@ -160,7 +163,7 @@ export const json_w2 = {
     title: '联系方式',
   },{
     dataIndex: 'part_id',
-    type: 'json',
+    type: 'string',
     title: '详情',
   },{
     dataIndex: 'in_num',
@@ -205,3 +208,81 @@ export const json_w2 = {
     }]
   }
 }
+
+export const json_w3 = {
+  table:'part_out',
+  define: [{
+    dataIndex: 'out_mng_id',
+    type: 'string',
+    title: '出库id',
+    key: true,
+  },{
+    dataIndex: 'whs_mng_id',
+    type: 'string',
+    title: '仓库id',
+  },{
+    dataIndex: 'in_mng_id',
+    type: 'string',
+    title: '入库id',
+  },{
+    dataIndex: 'out_num',
+    type: 'double',
+    title: '出库数量',
+  },{
+    dataIndex: 'out_goal',
+    type: 'select',
+    title: '出库目的',
+    enum: ['販売','自社'],
+  },{
+    dataIndex: 'last_out_user_id',
+    type: 'auto_user',
+    title: '最终管理用户',
+  },{
+    dataIndex: 'last_out_datetime',
+    type: 'auto_date',
+    title: '最终管理时间',
+  }],
+  sub: {
+    table: 'part_out_dtl',
+    ref: 'out_mng_id',
+    define: [{
+      dataIndex: 'out_dtl_id',
+      type: 'string',
+      title: '出库详情id',
+    },{
+      dataIndex: 'out_mng_id',
+      type: 'string',
+      title: '出库id',
+    },{
+      dataIndex: 'whs_mng_id',
+      type: 'string',
+      title: '仓库id',
+    },{
+      dataIndex: 'loc_id',
+      type: 'string',
+      title: '货架id',
+    },{
+      dataIndex: 'dev_id',
+      type: 'string',
+      title: '设备id',
+    },{
+      dataIndex: 'in_dtl_id',
+      type: 'string',
+      title: '入库详情id',
+    },{
+      dataIndex: 'part_id',
+      type: 'string',
+      title: '零件id',
+    },{
+      dataIndex: 'last_out_user_id',
+      type: 'auto_user',
+      title: '最终管理用户',
+    },{
+      dataIndex: 'last_out_datetime',
+      type: 'auto_date',
+      title: '最终管理时间',
+    }]
+  }
+}
+
+export const jsonList = [json_w1, json_w2, json_w3]
