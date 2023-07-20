@@ -29,6 +29,12 @@ export const MENU_LIST = [
         "icon": person,
         "submenu": []
     },
+    {
+        "key": "监控车辆",
+        "path": "/mqtt",
+        "icon": person,
+        "submenu": []
+    },
     // {
     //     "key": "系统设置",
     //     "path": "/config",
@@ -147,38 +153,38 @@ export const json_w2 = {
   define: [{
     dataIndex: 'in_mng_id',
     type: 'string',
-    title: '仓库ID',
+    title: '入库ID',
     key: true,
   },{
     dataIndex: 'whs_mng_id',
     type: 'string',
-    title: '仓库名称',
+    title: '仓库ID',
   },{
     dataIndex: 'loc_id',
     type: 'string',
-    title: '电子邮箱',
+    title: '货架ID',
   },{
     dataIndex: 'purcon_id',
     type: 'string',
-    title: '联系方式',
+    title: '仕入契約ID',
   },{
     dataIndex: 'part_id',
     type: 'string',
-    title: '详情',
+    title: '零件ID',
   },{
     dataIndex: 'in_num',
     type: 'double',
-    title: '在库数量',
+    title: '入库数量',
   },{
     dataIndex: 'hoso_serial',
     type: 'string',
     title: 'hoso编码',
   },{
-    dataIndex: 'last_inb_user_id',
+    dataIndex: 'last_in_user_id',
     type: 'auto_user',
     title: '最终管理用户',
   },{
-    dataIndex: 'last_inb_datetime',
+    dataIndex: 'last_in_datetime',
     type: 'auto_date',
     title: '最终管理时间',
   }],
@@ -188,23 +194,23 @@ export const json_w2 = {
     define: [{
       dataIndex: 'in_dtl_id',
       type: 'string',
-      title: '在庫ID',
+      title: '入库详单ID',
     },{
       dataIndex: 'in_mng_id',
       type: 'string',
-      title: '仓库id',
+      title: '入库id',
     },{
       dataIndex: 'part_id',
       type: 'string',
-      title: '货架id',
+      title: '零件id',
     },{
-      dataIndex: 'inb_rep_id',
+      dataIndex: 'in_rep_id',
       type: 'string',
-      title: '货架名称',
+      title: '入庫担当者',
     },{
       dataIndex: 'last_in_datetime',
       type: 'auto_date',
-      title: '零件id',
+      title: '最终管理时间',
     }]
   }
 }

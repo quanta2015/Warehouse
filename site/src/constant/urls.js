@@ -25,6 +25,3 @@ export const API_DELETE_RECORD = API_SERVER + '/deleteRecord'
 
 
 
-
-
-

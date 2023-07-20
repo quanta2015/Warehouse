@@ -5,7 +5,7 @@ import { MinusCircleOutlined, PlusCircleOutlined, PlusOutlined,ExclamationCircle
 import {API_SERVER} from '@/constant/apis'
 import { observer,MobXProviderContext } from 'mobx-react'
 import FormMain from './FormMain'
-import {json_w1,json_w2,jsonList} from '@/constant/data'
+import {jsonList} from '@/constant/data'
 import {filterData,getKeyField,clone} from '@/util/fn'
 import s from './index.module.less';
 import { useSearchParams } from 'react-router-dom';
