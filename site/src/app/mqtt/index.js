@@ -54,6 +54,56 @@ const Mqtt = () => {
     minValue={list[0]}
     maxValue={list[list.length-1]}
   />
+
+  const GaugeEle = (val) => <GaugeComponent
+    type="semicircle"
+      arc={{
+        width: 0.2,
+        padding: 0.005,
+        cornerRadius: 1,
+        subArcs: [
+          { limit: 20, color: '#EA4228' },
+          { limit: 50, color: '#F5CD19' },
+          { limit: 100, color: '#5BE12C' },
+        ]
+      }}
+      labels={{
+        valueLabel: { formatTextValue: value => value + '%' },
+        markLabel: {
+          type:'outer',
+          marks: [20,50,100].map(o=> ({ value: o })) 
+        }
+      }}
+      pointer={{ type: "arrow", color: '#ccc' }}
+      value={val}
+      minValue={0}
+      maxValue={100}
+    />
+
+  const GaugeTmp = (val)  => <GaugeComponent
+    type="semicircle"
+    arc={{
+      colorArray: ['#00FF15', '#FF2121'],
+      padding: 0.02,
+      subArcs:
+        [
+          { limit: 10 },
+          { limit: 15 },
+          { limit: 20 },
+          { limit: 30 },
+          { limit: 35 },
+          {}
+        ]
+    }}
+    pointer={{type: "blob", animationDelay: 0, elastic: true}}
+    value={val}
+    minValue={10}
+    maxValue={40}
+  />
+
+
+
+
   return (
 
     <div className={s.mqtt}>
@@ -85,11 +135,15 @@ const Mqtt = () => {
           <label>2381.3</label>
           <span>エンジン运行时间</span>
         </div>
-        <div className={s.cardq}>
-          {Gaugg(30,[0,100],'%')}
+        <div className={s.card}>
+          {/*{Gaugg(30,[0,100],'%')}*/}
+          {GaugeEle(56)}
           <span>バッテリー残りの寿命</span>
         </div>
-        <div className={s.card}></div>
+        <div className={s.card}>
+          {GaugeTmp(26)}
+          <span>环境温度</span>
+        </div>
       </div>
     
     </div>
