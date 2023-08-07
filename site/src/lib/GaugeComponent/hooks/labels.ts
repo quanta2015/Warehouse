@@ -207,7 +207,7 @@ export const addValueText = (gauge: Gauge) => {
   let ret = text.split('|')
   addText(ret[0], x, y, gauge, valueTextStyle, CONSTANTS.valueLabelClassname);
   addText(ret[1], x, y+fontSizeNumber, gauge, unitTextStyle, CONSTANTS.unitLabelClassname);
-  console.log('text',text,x,y,fontSizeNumber)
+  // console.log('text',text,x,y,fontSizeNumber)
 };
 
 export const clearValueLabel = (gauge: Gauge) => gauge.g.current.selectAll(`.${CONSTANTS.valueLabelClassname}`).remove();

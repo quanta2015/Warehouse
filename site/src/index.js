@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Routes, Route, HashRouter, BrowserRouter } from "react-router-dom";
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'mobx-react'
@@ -18,24 +18,28 @@ configure({enforceActions: 'observed'})
 pdfjs.GlobalWorkerOptions.workerSrc = `pdf.worker.js`;
 
 
-let Index  = Loadable({ loader: () => import('./app/index')})
-let Layout = Loadable({ loader: () => import('./app/layout')})
-let Ware   = Loadable({ loader: () => import('./app/ware')})
-let Mqtt   = Loadable({ loader: () => import('./app/mqtt')})
+const Index = lazy(() => import('./app/index'));
+const Layout = lazy(() => import('./app/layout'));
+const Ware = lazy(() => import('./app/ware'));
+const Mqtt = lazy(() => import('./app/mqtt'));
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider {...injects}>
     <ConfigProvider locale={zhCN}>
-      <BrowserRouter>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/"        element={<Index />} />
-            <Route path="/ware"    element={<Ware />} />
-            <Route path="/mqtt"    element={<Mqtt />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <HashRouter>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route path="/" element={<Index />} />
+              <Route path="/ware" element={<Ware />} />
+              <Route path="/mqtt" element={<Mqtt />} />
+            </Route>
+          </Routes>
+        </Suspense>
+      </HashRouter>
     </ConfigProvider>
   </Provider>
 );
+
+

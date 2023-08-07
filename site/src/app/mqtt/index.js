@@ -1,12 +1,53 @@
 import React, { useEffect, useState } from 'react';
+// import proces from 'process/browser'
+import * as mqtt from 'mqtt';
 
 import GaugeComponent from '@/lib';
+import * as urls from '@/constant/urls'
+import { observer,MobXProviderContext } from 'mobx-react'
 import CONSTANTS from '@/lib/GaugeComponent/constants';
 
 
 import s from './index.module.less'
 
 const Mqtt = () => {
+  const { store } = React.useContext(MobXProviderContext)
+
+
+  useEffect(() => {
+
+
+    const client = mqtt.connect(urls.MQTT_SERVER);
+    
+    const onConnect = () => {
+      console.log('Connected to MQTT SERVER.');
+      client.subscribe(urls.TOPIC);
+    };
+
+    client.on('error', (err) => {
+      console.error('Error:', err);
+    });
+
+
+    const onMessage = (top, msg) => {
+      let m = JSON.parse(msg.toString())
+      store.setData(m)
+      console.log(m)
+    };
+
+    client.on('connect', onConnect);
+    client.on('message', onMessage);
+
+    // 清除事件监听器
+    return () => {
+      client.off('connect', onConnect);
+      client.off('message', onMessage);
+    };
+  }, []); 
+
+
+
+
   const Gaugg = (val, list, unit) => <GaugeComponent
     arc={{
       width: 0.3,
@@ -104,44 +145,51 @@ const Mqtt = () => {
 
 
 
+  // data = {
+  //   eload: 30,
+  //   throttle: 50,
+  //   intakerate: 55,
+  // }
+
+
   return (
 
     <div className={s.mqtt}>
       <div className={s.row}>
         <div className={s.item}>
-          {Gauge(5700,[0,1000,2000,3000,4000,5000,6000,7000,8000],'RPM')}
+          {Gauge(store.data.erpm,[0,1000,2000,3000,4000,5000,6000,7000,8000],'RPM')}
           <span>エンジン回轮数</span>
         </div>
         <div className={s.item}>
-          {Gauge(136,[20,40,60,80,100,120,140,160,180],'km/h')}
+          {Gauge(store.data.speed,[20,40,60,80,100,120,140,160,180],'km/h')}
           <span>车速</span>
         </div>
         <div className={s.item}>
-          {Gauge(64,[20,40,60,80,100,120,140,160,180],'℃')}
+          {Gauge(store.data.cooltemp,[20,40,60,80,100,120,140,160,180],'℃')}
           <span>エンジン冷却液温度</span>
         </div>
         <div className={s.item}>
-          {Gauge(64,[20,40,60,80,100,120,140,160,180],'℃')}
+          {Gauge(store.data.intaketemp,[20,40,60,80,100,120,140,160,180],'℃')}
           <span>エンジンオイル温度</span>
         </div>
       </div>
 
       <div className={s.row}>
         <div className={s.card}>
-          <label>3:12:12</label>
+          <label>{store.data.mpressure}</label>
           <span>エンジン运行时间</span>
         </div>
         <div className={s.card}>
-          <label>2381.3</label>
+          <label>{store.data.igntiming}</label>
           <span>エンジン运行时间</span>
         </div>
         <div className={s.card}>
           {/*{Gaugg(30,[0,100],'%')}*/}
-          {GaugeEle(56)}
+          {GaugeEle(store.data.throttle)}
           <span>バッテリー残りの寿命</span>
         </div>
         <div className={s.card}>
-          {GaugeTmp(26)}
+          {GaugeTmp(store.data.envtemp)}
           <span>环境温度</span>
         </div>
       </div>

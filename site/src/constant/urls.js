@@ -9,8 +9,8 @@ export const API_DELETE_RECORD = API_SERVER + '/deleteRecord'
 
 
 
-
-
+export const TOPIC ='hoso/vehicle/data'
+export const MQTT_SERVER = 'ws://13.231.192.200:9001'
 
 
 

@@ -10,7 +10,23 @@ class Store {
   }
 
   mobile = false
+  data = {
+    erpm: 5000,
+    speed: 120,
+    mpressure: 25,
+    eload: 30,
+    cooltemp: 135,
+    intaketemp: 40,
+    igntiming: 45,
+    throttle: 50,
+    intakerate: 55,
+    envtemp: 60,
+  }
 
+
+  setData = (data)=> {
+    this.data = data
+  }
 
   async post(url, params) {
     const r = await post(url,params)
